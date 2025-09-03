@@ -13,6 +13,7 @@ import {
 } from 'chart.js';
 import * as pdfjsLib from 'pdfjs-dist';
 import LoginForm from './components/LoginForm.jsx';
+import './variables.css';  // Import the variables first
 
 // --- Register Chart.js components ---
 Chart.register(
