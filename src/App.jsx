@@ -13,6 +13,7 @@ import {
 } from 'chart.js';
 import * as pdfjsLib from 'pdfjs-dist';
 import LoginForm from './components/LoginForm.jsx';
+import RegistrationForm from './components/RegistrationForm.jsx';
 import './variables.css';  // Import the variables first
 
 // --- Register Chart.js components ---
@@ -998,8 +999,8 @@ const UserManagement = () => (
 const AppLayout = ({ children }) => {
     const { userRole, setScreen, setUserRole, apiKey, setApiKey, currentScreen } = useAppContext();
     
-    // Don't show sidebar for welcome and login screens
-    if (userRole === null || currentScreen === 'welcome' || currentScreen === 'login') {
+    // Don't show sidebar for welcome, login, and register screens
+    if (userRole === null || currentScreen === 'welcome' || currentScreen === 'login' || currentScreen === 'register') {
         return <>{children}</>;
     }
     
@@ -1085,9 +1086,32 @@ const ScreenRouter = () => {
         console.log(`${userType} logged in:`, userData);
     };
 
+    const handleRegister = (userType, userData) => {
+        // Mock registration success
+        setUserRole(userType);
+        
+        // Navigate to appropriate screen based on user type
+        if (userType === 'student') {
+            setScreen('student_onboarding');
+        } else if (userType === 'recruiter') {
+            setScreen('recruiter_dashboard');
+        }
+        
+        // In a real app, you would send registration data to backend
+        console.log(`${userType} registered:`, userData);
+    };
+
     const handleBackToWelcome = () => {
         setScreen('welcome');
         setUserRole(null);
+    };
+
+    const handleGoToRegister = () => {
+        setScreen('register');
+    };
+
+    const handleGoToLogin = () => {
+        setScreen('login');
     };
 
     switch (currentScreen) {
@@ -1097,6 +1121,14 @@ const ScreenRouter = () => {
             return <LoginForm 
                 onLogin={handleLogin} 
                 onBackToWelcome={handleBackToWelcome} 
+                onGoToRegister={handleGoToRegister}
+                defaultRole={selectedLoginRole}
+            />;
+        case 'register':
+            return <RegistrationForm 
+                onRegister={handleRegister} 
+                onBackToWelcome={handleBackToWelcome} 
+                onGoToLogin={handleGoToLogin}
                 defaultRole={selectedLoginRole}
             />;
         case 'student_onboarding':
