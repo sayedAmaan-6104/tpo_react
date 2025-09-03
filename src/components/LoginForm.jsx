@@ -6,7 +6,6 @@ const LoginForm = ({ onLogin, onBackToWelcome, defaultRole = 'student' }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    companyName: '',
     rememberMe: false
   });
   const [errors, setErrors] = useState({});
@@ -269,22 +268,6 @@ const LoginForm = ({ onLogin, onBackToWelcome, defaultRole = 'student' }) => {
                     {errors.password && (
                       <p className="error-message">{errors.password}</p>
                     )}
-                  </div>
-
-                  {/* Additional Recruiter Fields */}
-                  <div className="form-field">
-                    <label htmlFor="company-name" className="form-label">
-                      Company Name
-                    </label>
-                    <input
-                      id="company-name"
-                      name="companyName"
-                      type="text"
-                      placeholder="Your Company Name"
-                      value={formData.companyName}
-                      onChange={handleInputChange}
-                      className="form-input input-recruiter"
-                    />
                   </div>
 
                   <div className="flex items-center justify-between form-field">
