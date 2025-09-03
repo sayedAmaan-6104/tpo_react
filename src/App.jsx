@@ -12,6 +12,7 @@ import {
   Legend,
 } from 'chart.js';
 import * as pdfjsLib from 'pdfjs-dist';
+import LoginForm from './components/LoginForm.jsx';
 
 // --- Register Chart.js components ---
 Chart.register(
@@ -242,13 +243,13 @@ const WelcomeScreen = () => {
     const { setUserRole, setScreen } = useAppContext();
 
     const handleSelectRole = (role) => {
-        setUserRole(role);
-        if (role === 'student') {
-            setScreen('student_onboarding');
-        } else if (role === 'recruiter') {
-            setScreen('recruiter_dashboard');
-        } else if (role === 'admin') {
+        if (role === 'admin') {
+            // Admin goes directly to dashboard (separate endpoint simulation)
+            setUserRole(role);
             setScreen('admin_dashboard');
+        } else {
+            // Students and recruiters need to login
+            setScreen('login');
         }
     };
 
@@ -763,7 +764,12 @@ const UserManagement = () => (
 );
 
 const AppLayout = ({ children }) => {
-    const { userRole, setScreen, setUserRole, apiKey, setApiKey } = useAppContext();
+    const { userRole, setScreen, setUserRole, apiKey, setApiKey, currentScreen } = useAppContext();
+    
+    // Don't show sidebar for welcome and login screens
+    if (userRole === null || currentScreen === 'welcome' || currentScreen === 'login') {
+        return <>{children}</>;
+    }
     
     const SIDENAV_LINKS = {
         student: [
@@ -791,10 +797,6 @@ const AppLayout = ({ children }) => {
         setUserRole(null);
         setScreen('welcome');
     };
-
-    if (userRole === null) {
-        return <>{children}</>;
-    }
 
     const links = SIDENAV_LINKS[userRole] || [];
 
@@ -834,11 +836,33 @@ const AppLayout = ({ children }) => {
 };
 
 const ScreenRouter = () => {
-    const { currentScreen } = useAppContext();
+    const { currentScreen, setUserRole, setScreen } = useAppContext();
+
+    const handleLogin = (userType, userData) => {
+        // Mock authentication success
+        setUserRole(userType);
+        
+        // Navigate to appropriate screen based on user type
+        if (userType === 'student') {
+            setScreen('student_onboarding');
+        } else if (userType === 'recruiter') {
+            setScreen('recruiter_dashboard');
+        }
+        
+        // In a real app, you would validate credentials and handle authentication
+        console.log(`${userType} logged in:`, userData);
+    };
+
+    const handleBackToWelcome = () => {
+        setScreen('welcome');
+        setUserRole(null);
+    };
 
     switch (currentScreen) {
         case 'welcome':
             return <WelcomeScreen />;
+        case 'login':
+            return <LoginForm onLogin={handleLogin} onBackToWelcome={handleBackToWelcome} />;
         case 'student_onboarding':
             return <StudentOnboarding />;
         case 'student_dashboard':
