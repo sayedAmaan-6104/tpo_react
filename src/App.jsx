@@ -53,6 +53,7 @@ const AppProvider = ({ children }) => {
     const [currentScreen, setScreen] = useState('welcome');
     const [isLoading, setIsLoading] = useState(false);
     const [apiKey, setApiKey] = useState(() => localStorage.getItem('gemini-api-key') || '');
+    const [selectedLoginRole, setSelectedLoginRole] = useState('student'); // Default to student
 
     useEffect(() => {
         localStorage.setItem('gemini-api-key', apiKey);
@@ -67,6 +68,8 @@ const AppProvider = ({ children }) => {
         setIsLoading,
         apiKey,
         setApiKey,
+        selectedLoginRole,
+        setSelectedLoginRole,
     };
 
     return (
@@ -240,7 +243,7 @@ const IconWrapper = ({ children, className }) => (
 
 // --- MAIN SCREENS & COMPONENTS ---
 const WelcomeScreen = () => {
-    const { setUserRole, setScreen } = useAppContext();
+    const { setUserRole, setScreen, setSelectedLoginRole } = useAppContext();
 
     const handleSelectRole = (role) => {
         if (role === 'admin') {
@@ -249,6 +252,7 @@ const WelcomeScreen = () => {
             setScreen('admin_dashboard');
         } else {
             // Students and recruiters need to login
+            setSelectedLoginRole(role); // Set the selected role for the login form
             setScreen('login');
         }
     };
@@ -1063,7 +1067,7 @@ const AppLayout = ({ children }) => {
 };
 
 const ScreenRouter = () => {
-    const { currentScreen, setUserRole, setScreen } = useAppContext();
+    const { currentScreen, setUserRole, setScreen, selectedLoginRole } = useAppContext();
 
     const handleLogin = (userType, userData) => {
         // Mock authentication success
@@ -1089,7 +1093,11 @@ const ScreenRouter = () => {
         case 'welcome':
             return <WelcomeScreen />;
         case 'login':
-            return <LoginForm onLogin={handleLogin} onBackToWelcome={handleBackToWelcome} />;
+            return <LoginForm 
+                onLogin={handleLogin} 
+                onBackToWelcome={handleBackToWelcome} 
+                defaultRole={selectedLoginRole}
+            />;
         case 'student_onboarding':
             return <StudentOnboarding />;
         case 'student_dashboard':

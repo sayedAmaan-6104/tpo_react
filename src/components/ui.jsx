@@ -1,20 +1,27 @@
 import React from 'react';
 
-// Input component with shadcn styling
+// Input component with variables.css integration
 export const Input = React.forwardRef(({ className = '', type = 'text', ...props }, ref) => {
   return (
     <input
       type={type}
       className={`
-        flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm 
-        ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium 
-        placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 
+        flex h-10 w-full px-3 py-2 text-sm 
+        file:border-0 file:bg-transparent file:text-sm file:font-medium 
+        placeholder:opacity-60 focus-visible:outline-none focus-visible:ring-2 
         focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed 
-        disabled:opacity-50 dark:border-gray-700 dark:bg-gray-900 dark:ring-offset-gray-900 
-        dark:placeholder:text-gray-400 dark:focus-visible:ring-blue-400 transition-all
+        disabled:opacity-50 transition-all
         ${className}
       `}
       ref={ref}
+      style={{
+        background: 'var(--color-surface)',
+        border: '1px solid var(--color-border)',
+        borderRadius: 'var(--border-radius-md)',
+        color: 'var(--color-text-primary)',
+        transition: 'var(--transition-base)',
+        fontSize: 'var(--font-size-base)'
+      }}
       {...props}
     />
   );
@@ -58,15 +65,19 @@ export const FormMessage = ({ children, variant = 'default' }) => {
   );
 };
 
-// Card components
+// Card components with variables.css integration
 export const Card = ({ className = '', children, ...props }) => {
   return (
     <div
-      className={`
-        rounded-lg border border-gray-200 bg-white/80 backdrop-blur-lg shadow-lg 
-        dark:border-gray-700 dark:bg-gray-900/80 transition-all
-        ${className}
-      `}
+      className={`transition-all ${className}`}
+      style={{
+        background: 'var(--color-surface-glass)',
+        border: '1px solid var(--color-border)',
+        borderRadius: 'var(--border-radius-lg)',
+        boxShadow: 'var(--shadow-lg)',
+        backdropFilter: 'blur(20px)',
+        transition: 'var(--transition-base)'
+      }}
       {...props}
     >
       {children}
@@ -76,7 +87,9 @@ export const Card = ({ className = '', children, ...props }) => {
 
 export const CardHeader = ({ className = '', children, ...props }) => {
   return (
-    <div className={`flex flex-col space-y-1.5 p-6 ${className}`} {...props}>
+    <div className={`flex flex-col ${className}`} 
+         style={{ padding: 'var(--spacing-6)', paddingBottom: '0' }} 
+         {...props}>
       {children}
     </div>
   );
@@ -85,7 +98,13 @@ export const CardHeader = ({ className = '', children, ...props }) => {
 export const CardTitle = ({ className = '', children, ...props }) => {
   return (
     <h3
-      className={`text-2xl font-semibold leading-none tracking-tight text-gray-900 dark:text-gray-100 ${className}`}
+      className={`leading-none tracking-tight ${className}`}
+      style={{
+        fontSize: 'var(--font-size-display-sm)',
+        fontWeight: 'var(--font-weight-bold)',
+        color: 'var(--color-text-primary)',
+        marginBottom: 'var(--spacing-2)'
+      }}
       {...props}
     >
       {children}
@@ -95,7 +114,13 @@ export const CardTitle = ({ className = '', children, ...props }) => {
 
 export const CardDescription = ({ className = '', children, ...props }) => {
   return (
-    <p className={`text-sm text-gray-600 dark:text-gray-400 ${className}`} {...props}>
+    <p className={`${className}`} 
+       style={{
+         fontSize: 'var(--font-size-base)',
+         color: 'var(--color-text-secondary)',
+         lineHeight: 'var(--line-height-relaxed)'
+       }}
+       {...props}>
       {children}
     </p>
   );
@@ -103,7 +128,9 @@ export const CardDescription = ({ className = '', children, ...props }) => {
 
 export const CardContent = ({ className = '', children, ...props }) => {
   return (
-    <div className={`p-6 pt-0 ${className}`} {...props}>
+    <div className={`${className}`} 
+         style={{ padding: 'var(--spacing-6)', paddingTop: '0' }} 
+         {...props}>
       {children}
     </div>
   );
@@ -111,7 +138,9 @@ export const CardContent = ({ className = '', children, ...props }) => {
 
 export const CardFooter = ({ className = '', children, ...props }) => {
   return (
-    <div className={`flex items-center p-6 pt-0 ${className}`} {...props}>
+    <div className={`flex items-center ${className}`} 
+         style={{ padding: 'var(--spacing-6)', paddingTop: '0' }} 
+         {...props}>
       {children}
     </div>
   );
