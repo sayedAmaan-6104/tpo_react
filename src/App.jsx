@@ -254,23 +254,250 @@ const WelcomeScreen = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-gray-900 to-gray-700 text-white">
-            <div className="text-center w-full max-w-4xl mx-auto">
-                <h1 className="text-5xl md:text-7xl font-bold mb-4 animate-fade-in-down">Training & Placement Office Portal</h1>
-                <p className="text-xl md:text-2xl text-gray-300 mb-12 animate-fade-in-up">Your Gateway to a Successful Career</p>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div onClick={() => handleSelectRole('student')} className="role-card">
-                        <h2 className="text-3xl font-semibold mb-2">Student</h2>
-                        <p>Find jobs, optimize your resume, and practice for interviews.</p>
+        <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
+             style={{ 
+               background: 'var(--color-background)',
+               fontFamily: 'var(--font-sans)'
+             }}>
+            
+            {/* Animated Background Elements */}
+            <div className="absolute inset-0">
+                <div className="absolute top-20 left-20 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
+                <div className="absolute bottom-20 right-20 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+                <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-green-500/5 rounded-full blur-3xl animate-pulse" style={{animationDelay: '4s'}}></div>
+                
+                {/* Floating Elements */}
+                <div className="absolute top-1/4 right-1/4 w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div>
+                <div className="absolute bottom-1/3 left-1/4 w-3 h-3 bg-purple-400 rounded-full animate-bounce" style={{animationDelay: '3s'}}></div>
+                <div className="absolute top-2/3 right-1/3 w-1 h-1 bg-green-400 rounded-full animate-bounce" style={{animationDelay: '5s'}}></div>
+            </div>
+
+            <div className="text-center w-full max-w-6xl mx-auto relative z-10">
+                {/* Hero Section */}
+                <div className="mb-16">
+                    <div className="inline-block p-2 rounded-full mb-6" 
+                         style={{ background: 'var(--color-surface-glass)', border: '1px solid var(--color-border)' }}>
+                        <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                        </div>
                     </div>
-                    <div onClick={() => handleSelectRole('recruiter')} className="role-card">
-                        <h2 className="text-3xl font-semibold mb-2">Recruiter</h2>
-                        <p>Discover top talent, post jobs, and manage candidates.</p>
+                    
+                    <h1 className="font-bold mb-6 animate-fade-in-down"
+                        style={{ 
+                          fontSize: 'var(--font-size-display-lg)', 
+                          color: 'var(--color-text-primary)',
+                          lineHeight: 'var(--line-height-tight)'
+                        }}>
+                        Training & Placement
+                        <br />
+                        <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-green-500 bg-clip-text text-transparent">
+                            Office Portal
+                        </span>
+                    </h1>
+                    
+                    <p className="mb-8 animate-fade-in-up max-w-2xl mx-auto"
+                       style={{ 
+                         fontSize: 'var(--font-size-xl)', 
+                         color: 'var(--color-text-secondary)',
+                         lineHeight: 'var(--line-height-relaxed)'
+                       }}>
+                        Empowering careers through intelligent placement solutions. 
+                        Connect, grow, and succeed in your professional journey.
+                    </p>
+
+                    <div className="flex flex-wrap justify-center gap-4 mb-12">
+                        <div className="flex items-center gap-2 px-4 py-2 rounded-full"
+                             style={{ background: 'var(--color-surface-glass)', border: '1px solid var(--color-border)' }}>
+                            <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                            <span style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--font-size-sm)' }}>
+                                AI-Powered Matching
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-2 px-4 py-2 rounded-full"
+                             style={{ background: 'var(--color-surface-glass)', border: '1px solid var(--color-border)' }}>
+                            <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                            <span style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--font-size-sm)' }}>
+                                Real-time Analytics
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-2 px-4 py-2 rounded-full"
+                             style={{ background: 'var(--color-surface-glass)', border: '1px solid var(--color-border)' }}>
+                            <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                            <span style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--font-size-sm)' }}>
+                                Seamless Experience
+                            </span>
+                        </div>
                     </div>
-                    <div onClick={() => handleSelectRole('admin')} className="role-card">
-                        <h2 className="text-3xl font-semibold mb-2">Admin</h2>
-                        <p>Oversee the portal, manage users, and view analytics.</p>
+                </div>
+
+                {/* Role Selection Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    {/* Student Card */}
+                    <div onClick={() => handleSelectRole('student')} 
+                         className="group cursor-pointer transform transition-all duration-500 hover:scale-105">
+                        <div className="p-8 rounded-2xl relative overflow-hidden"
+                             style={{ 
+                               background: 'var(--color-surface-glass)', 
+                               border: '1px solid var(--color-border)',
+                               borderRadius: 'var(--border-radius-xl)',
+                               backdropFilter: 'blur(20px)',
+                               transition: 'var(--transition-base)'
+                             }}>
+                            {/* Card Background Gradient */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            
+                            {/* Icon */}
+                            <div className="relative z-10 mb-6">
+                                <div className="w-16 h-16 mx-auto bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-500">
+                                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                    </svg>
+                                </div>
+                            </div>
+
+                            {/* Content */}
+                            <div className="relative z-10">
+                                <h2 className="font-bold mb-4 group-hover:text-blue-400 transition-colors duration-300"
+                                    style={{ 
+                                      fontSize: 'var(--font-size-display-sm)', 
+                                      color: 'var(--color-text-primary)'
+                                    }}>
+                                    Student Portal
+                                </h2>
+                                <p className="mb-6"
+                                   style={{ 
+                                     color: 'var(--color-text-secondary)', 
+                                     fontSize: 'var(--font-size-base)',
+                                     lineHeight: 'var(--line-height-relaxed)'
+                                   }}>
+                                    Discover opportunities, optimize your resume with AI, practice interviews, 
+                                    and track your application journey.
+                                </p>
+
+                                {/* Features List */}
+                                <div className="space-y-3">
+                                    {[
+                                        'AI Resume Optimization',
+                                        'Mock Interview Practice',
+                                        'Job Matching Algorithm',
+                                        'Application Tracking'
+                                    ].map((feature, index) => (
+                                        <div key={index} className="flex items-center gap-3">
+                                            <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
+                                            <span style={{ 
+                                              color: 'var(--color-text-muted)', 
+                                              fontSize: 'var(--font-size-sm)' 
+                                            }}>
+                                                {feature}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {/* CTA */}
+                                <div className="mt-8 flex items-center justify-center gap-2 text-blue-400 group-hover:text-blue-300 transition-colors duration-300">
+                                    <span style={{ fontSize: 'var(--font-size-base)', fontWeight: 'var(--font-weight-medium)' }}>
+                                        Get Started
+                                    </span>
+                                    <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    {/* Recruiter Card */}
+                    <div onClick={() => handleSelectRole('recruiter')} 
+                         className="group cursor-pointer transform transition-all duration-500 hover:scale-105">
+                        <div className="p-8 rounded-2xl relative overflow-hidden"
+                             style={{ 
+                               background: 'var(--color-surface-glass)', 
+                               border: '1px solid var(--color-border)',
+                               borderRadius: 'var(--border-radius-xl)',
+                               backdropFilter: 'blur(20px)',
+                               transition: 'var(--transition-base)'
+                             }}>
+                            {/* Card Background Gradient */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            
+                            {/* Icon */}
+                            <div className="relative z-10 mb-6">
+                                <div className="w-16 h-16 mx-auto bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-500">
+                                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2V6" />
+                                    </svg>
+                                </div>
+                            </div>
+
+                            {/* Content */}
+                            <div className="relative z-10">
+                                <h2 className="font-bold mb-4 group-hover:text-purple-400 transition-colors duration-300"
+                                    style={{ 
+                                      fontSize: 'var(--font-size-display-sm)', 
+                                      color: 'var(--color-text-primary)'
+                                    }}>
+                                    Recruiter Hub
+                                </h2>
+                                <p className="mb-6"
+                                   style={{ 
+                                     color: 'var(--color-text-secondary)', 
+                                     fontSize: 'var(--font-size-base)',
+                                     lineHeight: 'var(--line-height-relaxed)'
+                                   }}>
+                                    Find top talent efficiently, post opportunities, manage candidates, 
+                                    and streamline your hiring process.
+                                </p>
+
+                                {/* Features List */}
+                                <div className="space-y-3">
+                                    {[
+                                        'AI-Powered Candidate Matching',
+                                        'Streamlined Job Posting',
+                                        'Advanced Candidate Filtering',
+                                        'Interview Management'
+                                    ].map((feature, index) => (
+                                        <div key={index} className="flex items-center gap-3">
+                                            <div className="w-1.5 h-1.5 bg-purple-400 rounded-full"></div>
+                                            <span style={{ 
+                                              color: 'var(--color-text-muted)', 
+                                              fontSize: 'var(--font-size-sm)' 
+                                            }}>
+                                                {feature}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {/* CTA */}
+                                <div className="mt-8 flex items-center justify-center gap-2 text-purple-400 group-hover:text-purple-300 transition-colors duration-300">
+                                    <span style={{ fontSize: 'var(--font-size-base)', fontWeight: 'var(--font-weight-medium)' }}>
+                                        Start Hiring
+                                    </span>
+                                    <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Footer Section */}
+                <div className="mt-16 text-center">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-4"
+                         style={{ background: 'var(--color-surface-glass)', border: '1px solid var(--color-border)' }}>
+                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        <span style={{ color: 'var(--color-text-muted)', fontSize: 'var(--font-size-sm)' }}>
+                            Trusted by 1000+ institutions worldwide
+                        </span>
+                    </div>
+                    
+                    <p style={{ color: 'var(--color-text-muted)', fontSize: 'var(--font-size-sm)' }}>
+                        Need administrative access? Contact your system administrator.
+                    </p>
                 </div>
             </div>
         </div>
@@ -918,19 +1145,6 @@ export default function App() {
     return (
         <>
             <style>{`
-                .role-card {
-                    background: rgba(255, 255, 255, 0.1);
-                    border-radius: 1rem;
-                    padding: 2rem;
-                    transition: transform 0.3s ease, background 0.3s ease;
-                    cursor: pointer;
-                    border: 1px solid rgba(255, 255, 255, 0.2);
-                    backdrop-filter: blur(10px);
-                }
-                .role-card:hover {
-                    transform: translateY(-10px) scale(1.03);
-                    background: rgba(255, 255, 255, 0.2);
-                }
                 @keyframes fade-in-down { 
                     0% { opacity: 0; transform: translateY(-20px); } 
                     100% { opacity: 1; transform: translateY(0); } 
@@ -939,12 +1153,41 @@ export default function App() {
                     0% { opacity: 0; transform: translateY(20px); } 
                     100% { opacity: 1; transform: translateY(0); } 
                 }
-                .animate-fade-in-down { animation: fade-in-down 0.8s ease-out forwards; }
-                .animate-fade-in-up { animation: fade-in-up 0.8s ease-out 0.3s forwards; }
-                .prose { max-width: none; }
+                @keyframes float {
+                    0%, 100% { transform: translateY(0px); }
+                    50% { transform: translateY(-20px); }
+                }
+                .animate-fade-in-down { 
+                    animation: fade-in-down 0.8s ease-out forwards; 
+                }
+                .animate-fade-in-up { 
+                    animation: fade-in-up 0.8s ease-out 0.3s forwards; 
+                    opacity: 0;
+                }
+                .animate-float {
+                    animation: float 6s ease-in-out infinite;
+                }
+                .prose { 
+                    max-width: none; 
+                }
+                
+                /* Custom scrollbar for better aesthetics */
+                ::-webkit-scrollbar {
+                    width: 8px;
+                }
+                ::-webkit-scrollbar-track {
+                    background: var(--color-surface);
+                }
+                ::-webkit-scrollbar-thumb {
+                    background: var(--color-border);
+                    border-radius: 4px;
+                }
+                ::-webkit-scrollbar-thumb:hover {
+                    background: var(--color-border-hover);
+                }
             `}</style>
             <AppProvider>
-                <div className="font-sans">
+                <div className="font-sans" style={{ fontFamily: 'var(--font-sans)' }}>
                     <AppWrapper />
                 </div>
             </AppProvider>
