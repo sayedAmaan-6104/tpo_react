@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { authAPI } from '../services/api';
 import './LoginForm.css';
 
 const LoginForm = ({ onLogin, onBackToWelcome, onGoToRegister, defaultRole = 'student' }) => {
@@ -54,17 +55,27 @@ const LoginForm = ({ onLogin, onBackToWelcome, onGoToRegister, defaultRole = 'st
     if (!validateForm()) return;
     
     setIsLoading(true);
+    setErrors({}); // Clear previous errors
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const response = await authAPI.login(
+        formData.email,
+        formData.password,
+        activeTab
+      );
       
-      // Mock authentication logic
-      if (formData.email && formData.password) {
-        onLogin(activeTab, formData);
-      }
+      // Success - call the onLogin callback with the response data
+      onLogin(activeTab, {
+        ...formData,
+        user: response.user,
+        profile: response.profile
+      });
     } catch (error) {
-      setErrors({ submit: 'Login failed. Please try again.' });
+      console.error('Login error:', error);
+      setErrors({ 
+        submit: error.message || 'Login failed. Please try again.',
+        ...error.errors 
+      });
     } finally {
       setIsLoading(false);
     }

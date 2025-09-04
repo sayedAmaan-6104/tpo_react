@@ -12,6 +12,7 @@ import {
   Legend,
 } from 'chart.js';
 import * as pdfjsLib from 'pdfjs-dist';
+import { getCurrentUser, getCurrentUserProfile, isAuthenticated } from './services/api';
 import LoginForm from './components/LoginForm.jsx';
 import RegistrationForm from './components/RegistrationForm.jsx';
 import './variables.css';  // Import the variables first
@@ -52,10 +53,32 @@ const AppContext = createContext(null);
 
 const AppProvider = ({ children }) => {
     const [userRole, setUserRole] = useState(null);
+    const [userData, setUserData] = useState(null);
+    const [userProfile, setUserProfile] = useState(null);
     const [currentScreen, setScreen] = useState('welcome');
     const [isLoading, setIsLoading] = useState(false);
     const [apiKey, setApiKey] = useState(() => localStorage.getItem('gemini-api-key') || '');
     const [selectedLoginRole, setSelectedLoginRole] = useState('student'); // Default to student
+
+    // Check for existing authentication on app start
+    useEffect(() => {
+        if (isAuthenticated()) {
+            const user = getCurrentUser();
+            const profile = getCurrentUserProfile();
+            if (user) {
+                setUserData(user);
+                setUserRole(user.user_type);
+                setUserProfile(profile);
+                
+                // Navigate to appropriate screen based on user type
+                if (user.user_type === 'student') {
+                    setScreen('student_onboarding');
+                } else if (user.user_type === 'recruiter') {
+                    setScreen('recruiter_dashboard');
+                }
+            }
+        }
+    }, []);
 
     useEffect(() => {
         localStorage.setItem('gemini-api-key', apiKey);
@@ -64,6 +87,10 @@ const AppProvider = ({ children }) => {
     const value = {
         userRole,
         setUserRole,
+        userData,
+        setUserData,
+        userProfile,
+        setUserProfile,
         currentScreen,
         setScreen,
         isLoading,
@@ -1069,41 +1096,57 @@ const AppLayout = ({ children }) => {
 };
 
 const ScreenRouter = () => {
-    const { currentScreen, setUserRole, setScreen, selectedLoginRole } = useAppContext();
+    const { 
+        currentScreen, 
+        setUserRole, 
+        setUserData, 
+        setUserProfile, 
+        setScreen, 
+        selectedLoginRole 
+    } = useAppContext();
 
     const handleLogin = (userType, userData) => {
-        // Mock authentication success
-        setUserRole(userType);
+        // Authentication success - user data comes from API response
+        const { user, profile } = userData;
+        
+        setUserRole(user.user_type);
+        setUserData(user);
+        if (profile) {
+            setUserProfile(profile);
+        }
         
         // Navigate to appropriate screen based on user type
-        if (userType === 'student') {
+        if (user.user_type === 'student') {
             setScreen('student_onboarding');
-        } else if (userType === 'recruiter') {
+        } else if (user.user_type === 'recruiter') {
             setScreen('recruiter_dashboard');
         }
         
-        // In a real app, you would validate credentials and handle authentication
-        console.log(`${userType} logged in:`, userData);
+        console.log(`${user.user_type} logged in:`, user);
     };
 
     const handleRegister = (userType, userData) => {
-        // Mock registration success
-        setUserRole(userType);
+        // Registration success - user data comes from API response
+        const { user } = userData;
+        
+        setUserRole(user.user_type);
+        setUserData(user);
         
         // Navigate to appropriate screen based on user type
-        if (userType === 'student') {
+        if (user.user_type === 'student') {
             setScreen('student_onboarding');
-        } else if (userType === 'recruiter') {
+        } else if (user.user_type === 'recruiter') {
             setScreen('recruiter_dashboard');
         }
         
-        // In a real app, you would send registration data to backend
-        console.log(`${userType} registered:`, userData);
+        console.log(`${user.user_type} registered:`, user);
     };
 
     const handleBackToWelcome = () => {
         setScreen('welcome');
         setUserRole(null);
+        setUserData(null);
+        setUserProfile(null);
     };
 
     const handleGoToRegister = () => {

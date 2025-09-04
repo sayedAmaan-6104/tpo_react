@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { authAPI } from '../services/api';
 import './RegistrationForm.css';
 
 const RegistrationForm = ({ onRegister, onBackToWelcome, onGoToLogin, defaultRole = 'student' }) => {
@@ -159,15 +160,28 @@ const RegistrationForm = ({ onRegister, onBackToWelcome, onGoToLogin, defaultRol
     if (!validateForm()) return;
     
     setIsLoading(true);
+    setErrors({}); // Clear previous errors
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      let response;
       
-      // Call the onRegister callback with the form data
-      onRegister(activeTab, formData);
+      if (activeTab === 'student') {
+        response = await authAPI.registerStudent(formData);
+      } else if (activeTab === 'recruiter') {
+        response = await authAPI.registerRecruiter(formData);
+      }
+      
+      // Success - call the onRegister callback with the response data
+      onRegister(activeTab, {
+        ...formData,
+        user: response.user
+      });
     } catch (error) {
-      setErrors({ submit: 'Registration failed. Please try again.' });
+      console.error('Registration error:', error);
+      setErrors({ 
+        submit: error.message || 'Registration failed. Please try again.',
+        ...error.errors 
+      });
     } finally {
       setIsLoading(false);
     }
