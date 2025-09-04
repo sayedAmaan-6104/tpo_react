@@ -9,23 +9,19 @@ import { Card, Button, IconWrapper, Modal, LoadingSpinner } from '../../componen
 
 const StudentDashboard = () => {
   const navigate = useNavigate();
-  const { userData, userProfile, setUserRole, setUserData, setUserProfile, apiKey, setApiKey } = useAppContext();
+  const { userData, userProfile, logout, apiKey, setApiKey } = useAppContext();
   const [currentPage, setCurrentPage] = useState('dashboard');
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
 
   const handleLogout = async () => {
     try {
       await authAPI.logout();
-      setUserRole(null);
-      setUserData(null);
-      setUserProfile(null);
+      logout();
       navigate('/');
     } catch (error) {
       console.error('Logout error:', error);
       // Even if logout fails, clear local state and redirect
-      setUserRole(null);
-      setUserData(null);
-      setUserProfile(null);
+      logout();
       navigate('/');
     }
   };

@@ -8,22 +8,18 @@ import { Card, Button } from '../../components/ui';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const { userData, setUserRole, setUserData, setUserProfile } = useAppContext();
+  const { userData, userProfile, logout } = useAppContext();
   const [currentPage, setCurrentPage] = useState('dashboard');
 
   const handleLogout = async () => {
     try {
       await authAPI.logout();
-      setUserRole(null);
-      setUserData(null);
-      setUserProfile(null);
+      logout();
       navigate('/');
     } catch (error) {
       console.error('Logout error:', error);
       // Even if logout fails, clear local state and redirect
-      setUserRole(null);
-      setUserData(null);
-      setUserProfile(null);
+      logout();
       navigate('/');
     }
   };

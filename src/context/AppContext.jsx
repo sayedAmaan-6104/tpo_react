@@ -28,6 +28,16 @@ export const AppProvider = ({ children }) => {
     localStorage.setItem('gemini-api-key', apiKey);
   }, [apiKey]);
 
+  // Logout function
+  const logout = () => {
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('user_data');
+    localStorage.removeItem('user_profile');
+    setUserRole(null);
+    setUserData(null);
+    setUserProfile(null);
+  };
+
   const value = {
     userRole,
     setUserRole,
@@ -41,6 +51,7 @@ export const AppProvider = ({ children }) => {
     setApiKey,
     selectedLoginRole,
     setSelectedLoginRole,
+    logout,
   };
 
   return (
