@@ -1,5 +1,22 @@
 import axios from 'axios';
 
+// Function to get CSRF token from cookies
+const getCSRFToken = () => {
+  const name = 'csrftoken';
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+};
+
 // Create axios instance with base configuration
 const api = axios.create({
   baseURL: '/api/auth/', // Use proxy path instead of full URL
@@ -16,6 +33,15 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    
+    // Add CSRF token for state-changing requests
+    if (['post', 'put', 'patch', 'delete'].includes(config.method)) {
+      const csrfToken = getCSRFToken();
+      if (csrfToken) {
+        config.headers['X-CSRFToken'] = csrfToken;
+      }
+    }
+    
     return config;
   },
   (error) => {
@@ -43,6 +69,15 @@ api.interceptors.response.use(
 
 // Authentication API functions
 export const authAPI = {
+  // Get CSRF token
+  getCSRFToken: async () => {
+    try {
+      await api.get('/csrf/'); // This endpoint should return CSRF token
+    } catch (error) {
+      console.warn('Could not get CSRF token:', error);
+    }
+  },
+
   // Student registration
   registerStudent: async (userData) => {
     try {
